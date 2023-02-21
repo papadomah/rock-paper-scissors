@@ -1,0 +1,333 @@
+/* font */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Montserrat:wght@500&display=swap');
+
+/* variables */
+:root{
+    --Light-text: rgb(255, 255, 255);
+    --dark-text: rgb(59, 67, 99);
+    --score-text: rgb(42, 70, 192);
+    --outline: rgb(96, 110, 133);
+    --background-grad-1: rgb(31, 55, 86);
+    --background-grad-2: rgb(20, 21, 57);
+    --scissors-1: rgb(236, 158, 14);
+    --scissors-2: rgb(236, 169, 34);
+    --paper-grad-1: hsl(230, 89%, 62%);
+    --paper-grad-2: rgb(86, 113, 245);
+    --rock-grad-1: hsl(349, 71%, 52%);
+    --rock-grad-2: hsl(230, 89%, 65%);   
+    --light-shadow: rgba(0, 0, 0, 0.149);
+    --mid-shadow: rgba(0, 0, 0, 0.302);
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Barlow Semi Condensed', sans-serif;
+    background: radial-gradient(at top,var(--background-grad-1),var(--background-grad-2));
+    min-height: 100vh;
+    text-transform: uppercase;
+    color: var(--Light-text);
+}
+/* main content */
+.container{
+    position: relative; /* so that we can position things inside*/
+    max-width: 700px;
+    margin: 0 auto; /*to center the container*/
+    padding-top: 2rem ; /* to create some space around*/
+    
+}
+.header{
+    display: flex; /* to position the title and score horizontally*/
+    justify-content: space-between; /* so that they can be on the left and right*/
+    align-items: center;/* to center them*/
+    height: 150px;
+    border: 3px solid var(--outline);
+    border-radius: 20px;
+    padding: 1rem 1.4rem 1rem 2rem;
+}
+.logo img{
+    height: 100%;
+}
+.score{
+    display: flex; /* because we have items within the score*/
+    flex-direction: column; /*so that it is vertical*/
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border-radius: 10px;
+    width: 150px;
+    height: 100%;
+    line-height: 1;
+}
+.score_title{
+    font-size: 1.1rem;
+    letter-spacing: 0.1rem;
+    color: var(--score-text); 
+
+}
+.score_number{
+font-size: 4rem;
+font-weight: 700;
+color: var(--dark-text);
+}
+
+/*game*/
+.game{
+    position: relative; /*to enable us position objects within it*/
+    display: grid;
+    grid-template-columns: (repeat(2, 1fr));
+    grid-template-areas: 
+    'paper scissors'
+    'rock rock';
+    place-items: center;
+    height: 30rem;
+    padding-top: 4rem;
+
+}
+/* working on the triangle linking the paper scissor and rock using a psuedo selector because we have an svg for it*/
+.game::before{
+    content: ''; /* leaving it empty. (this to inset the generated content because of the psuedo selector*/
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 24%; /* this is to position the triangle correctly*/
+    top: 28%;
+    background: url(./images/bg-triangle.svg) no-repeat;
+    z-index: -1;
+
+}
+.choice-btn{
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+}
+.choice{
+    position: relative;
+    width: 8rem;
+    height: 8rem;
+    background: #fff;
+    border-radius: 50%;
+    display: grid; /* so that we can easy center the content*/
+    place-items: center;
+    box-shadow: inset 0 0.5rem var(--light-shadow); /* this is to create the inner shadow on the choices by insetting 0 on the x-axis and 0.5rem on the y-axis and applying the color from the root*/
+}
+.choice::before,
+.choice::after{
+    content: '';
+    position: absolute;
+    left: -15; /* this is to adjust the left by half of 30 of the width*/
+    top: -15; /*same */
+    width: 130%; /* meaning 130% of the choice to go beyong the choice .same as the height*/
+    height: 130%;
+    border-radius: 50%;
+    z-index: -1;/*to send it back*/
+}
+/* to ensure it indicates if we click on our choices*/
+.choice::after{
+opacity: 0;
+transition: opacity 0.4s ease;
+}
+/* working on button focus*/
+.choice-btn:focus .choice::after{
+    opacity: 1;
+    box-shadow: 0 0 0 2rem #223351;
+    z-index: -2;/*to ensure it stays behind*/
+}
+/* to increase the size of the choice images*/
+.choices img{
+    transform: scale(1.6);
+}
+
+/* apply the individual colors*/
+.choice.paper::before{
+    background: linear-gradient(to bottom, var(--paper-grad-1), var(--paper-grad-2));
+    box-shadow: 0 0.5rem var(--mid-shadow), 0 0.5rem var(--paper-grad-2); /*this is to create the outer darker shadow for paper choice. one color was not showing so we have to combine the two*/
+}
+.choice.scissors::before{
+    background: linear-gradient(to bottom, var(--scissors-1), var(--scissors-2));
+    box-shadow: 0 0.5rem var(--mid-shadow), 0 0.5rem var(--scissors-2);
+}
+.choice.rock::before{
+    background: linear-gradient(to bottom, var(--rock-grad-1), var(--rock-grad-2));
+    box-shadow: 0 0.5rem var(--mid-shadow), 0 0.5rem var(--rock-grad-2);
+}
+
+
+
+.choice-btn[data-choice='paper']{
+grid-area: paper;
+}
+.choice-btn[data-choice='scissors']{
+    grid-area: scissors;
+    }
+.choice-btn[data-choice='rock']{
+        grid-area: rock;
+}
+
+/* results  step 2 */
+.results{ 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr);
+    place-items: center;
+    grid-template-areas:
+    "you-title ai-title"
+    "you-picked ai-picked";
+    max-width: 1000px;
+    margin: 0 auto; /*to center it*/
+}
+.results_heading{
+    font-size: 1.5rem;
+    letter-spacing: 0.1rem;
+    padding: 4rem 0 8rem;
+    
+    
+}
+.results_result{
+    min-width: 10rem;
+    min-height: 10rem;
+    /* background: #16213d; */
+     border-radius: 50%;
+    transform: scale(1.4);
+    z-index: -1;
+} 
+
+.results_heading:first-of-type{
+    grid-area: you-title;
+}
+.results_heading:last-of-type{
+    grid-area: ia-title;
+    
+}
+.results_result:first-of-type{
+    grid-area: you-picked;
+}
+.results_result:last-of-type{
+    grid-area: ai-picked;
+}
+
+/* step 4 winner */
+.results.show-winner{
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+    'you-title . ai-title'
+    'you-picked result-winner ai-picked';
+
+}
+/* adding three layers of box shadow */
+.winner .choice::after{
+box-shadow: 0 0 30px #293251, 0 0 0 60px #232c4b, 0 0 0 100px #1e2949;
+animation: winner 1s ease forwards;
+}
+@keyframes winner{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.results_winner{
+    grid-area: result-winner;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    
+}
+.results_text{
+    font-size: 3.5rem;
+    padding-bottom: 1.5rem;
+}
+.play-again{
+    background: #fff;
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 0.6rem;
+    color: var(--dark-text);
+    padding: 0.6rem 3.5rem;
+    font-family: inherit;
+    text-transform: inherit;
+    font-size: 1.3rem;
+    letter-spacing: 0.1rem;
+    cursor: pointer;
+}
+/* accessibility  to show the result because it was hidden in the html*/
+.play-again:focus{
+    border: 2px solid var(--outline);
+
+}
+/*Rules button*/
+.rules-btn{
+    position:absolute;
+    bottom: 2rem;
+    right: 2rem;
+    background: none;
+    outline: none;
+    border: 2px solid var(--outline);
+    border-radius: 0.6rem;
+    color: var(--Light-text);
+    padding: 0.4rem 2rem;
+    font-family: inherit;/*this is because buttons dont inherit font-family automatically*/
+    text-transform: inherit; /*for the same reason*/
+    font-size: 1.3rem;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+}
+/* adding accessibility to the rules button to ensure when we tap on it, it will focus*/
+.rules-btn:focus {
+    border: 2px solid #fff;
+}
+
+/* Rules modal */
+.modal{
+    position: absolute;
+    height: 115%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: grid;
+    place-items: center;
+    background: var(--mid-shadow);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+}
+.modal_container{
+    background: #fff;
+    border-radius: 0.5rem;
+    
+}
+.modal_header{
+    display: flex;
+    width:100%;
+    justify-content: space-between ; 
+    padding: 2rem 2rem 1rem;
+}
+.modal_heading{
+    font-size: 1.5rem;
+    color: var(--dark-text);
+}
+.close-btn{
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+}
+.rules-img{
+padding: 1rem 2rem;
+}
+.show-modal{
+    opacity: 1;
+    pointer-events: initial;
+}
+
+/* utilities */
+.preload *{
+    transition: none;/* to fix the brief load of the rules when we refresh the browser*/
+}
+.hidden{
+    display: none;
+}
