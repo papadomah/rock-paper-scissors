@@ -92,7 +92,7 @@ color: var(--dark-text);
     position: absolute;
     width: 100%;
     height: 100%;
-    left: 24%; /* this is to position the triangle correctly*/
+    left: 28%; /* this is to position the triangle correctly*/
     top: 28%;
     background: url(./images/bg-triangle.svg) no-repeat;
     z-index: -1;
