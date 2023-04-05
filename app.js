@@ -49,7 +49,7 @@ let compChoice = compChoose()
 displayResults ([choice, compChoice]) // this to display result
 displayWinner ([choice, compChoice]) // this display winner 
 } 
-//computer function
+//computer choose function
 function compChoose () {
   let rand = Math.floor(Math.random()*CHOICES.length)
   return CHOICES[rand];
@@ -57,7 +57,7 @@ function compChoose () {
 //results display function
 function displayResults(results) {
   resultDs.forEach((resultsD, idx) =>{
-    setTimeout(() => {
+    setTimeout(() => { /* the reason why we using settimeout is not to allow the computer result to not happen right away*/
       resultsD.innerHTML = `
       <div class="choice ${results[idx].name}">
       <img src="images/icon-${results[idx].name}.svg" alt="${results[idx].name}" />
@@ -76,11 +76,11 @@ function displayWinner(results){
     if(userWins){
       resultText.innerText = 'you win';
       resultDs[0].classList.toggle('winner'); //the three layer function for user
-      keeScore(1);
+      keeScore(1); //this is to add one point if we win
     } else if(aiWins){
       resultText.innerText = 'you lose';
       resultDs[1].classList.toggle('winner'); //the three layer function for computer
-      keeScore(-1);
+      keeScore(-1); //this is to subtract one point if we lose
     } else{
       resultText.innerText = 'draw';
     }
@@ -90,7 +90,7 @@ function displayWinner(results){
 };
 //isWinner function
 function isWinner(results) {
-  return results[0].beats === results[1].name; // to compare your choice to comp choice . that is the reason to use result.reverse() at line 69 to compare the comp choice first to user choice
+  return results[0].beats === results[1].name; // to compare your choice to comp choice . that is the reason to use result.reverse() at line 69 to compare the comp choice first to user choice. to check if the first result beats the second result or to compare your choice to the computer choice
 }
 keeScore = (point) =>{
   score += point
@@ -102,7 +102,7 @@ playAgainBtn.addEventListener('click', () =>{
   gameD.classList.toggle('hidden')
   resultsD.classList.toggle('hidden')
 
-  resultDs.forEach(resultsD =>{
+  resultDs.forEach(resultsD =>{ //this function is to clear all results to its original for the next game
     resultsD.innerHTML = '';
     resultsD.classList.remove('winner')
   })

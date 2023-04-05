@@ -3,7 +3,7 @@
 
 /* variables */
 :root{
-    --Light-text: rgb(255, 255, 255);
+    --Light-text: #ffffff;
     --dark-text: rgb(59, 67, 99);
     --score-text: rgb(42, 70, 192);
     --outline: rgb(96, 110, 133);
@@ -14,7 +14,7 @@
     --paper-grad-1: hsl(230, 89%, 62%);
     --paper-grad-2: rgb(86, 113, 245);
     --rock-grad-1: hsl(349, 71%, 52%);
-    --rock-grad-2: hsl(230, 89%, 65%);   
+    --rock-grad-2: hsl(349, 70%, 56%);   
     --light-shadow: rgba(0, 0, 0, 0.149);
     --mid-shadow: rgba(0, 0, 0, 0.302);
 }
@@ -26,7 +26,7 @@
 body{
     font-family: 'Barlow Semi Condensed', sans-serif;
     background: radial-gradient(at top,var(--background-grad-1),var(--background-grad-2));
-    min-height: 100vh;
+    min-height: 115vh;
     text-transform: uppercase;
     color: var(--Light-text);
 }
@@ -46,6 +46,7 @@ body{
     border: 3px solid var(--outline);
     border-radius: 20px;
     padding: 1rem 1.4rem 1rem 2rem;
+    
 }
 .logo img{
     height: 100%;
@@ -87,7 +88,8 @@ color: var(--dark-text);
 
 }
 /* working on the triangle linking the paper scissor and rock using a psuedo selector because we have an svg for it*/
-.game::before{
+
+.game::before{ /*working on the triangle */
     content: ''; /* leaving it empty. (this to inset the generated content because of the psuedo selector*/
     position: absolute;
     width: 100%;
@@ -111,10 +113,10 @@ color: var(--dark-text);
     background: #fff;
     border-radius: 50%;
     display: grid; /* so that we can easy center the content*/
-    place-items: center;
+    place-items: center; /* to center vertically and horizontally */
     box-shadow: inset 0 0.5rem var(--light-shadow); /* this is to create the inner shadow on the choices by insetting 0 on the x-axis and 0.5rem on the y-axis and applying the color from the root*/
 }
-.choice::before,
+.choice::before, /* to make the choices accessible*/
 .choice::after{
     content: '';
     position: absolute;
@@ -125,8 +127,8 @@ color: var(--dark-text);
     border-radius: 50%;
     z-index: -1;/*to send it back*/
 }
-/* to ensure it indicates if we click on our choices*/
-.choice::after{
+
+.choice::after{ /* to ensure it indicates if we click on our choices or to make the choices accessible */
 opacity: 0;
 transition: opacity 0.4s ease;
 }
@@ -138,7 +140,7 @@ transition: opacity 0.4s ease;
 }
 /* to increase the size of the choice images*/
 .choices img{
-    transform: scale(1.6);
+    transform: scale(1.6); /*to increase the size of the rock paper scissors images */
 }
 
 /* apply the individual colors*/
@@ -157,7 +159,7 @@ transition: opacity 0.4s ease;
 
 
 
-.choice-btn[data-choice='paper']{
+.choice-btn[data-choice='paper']{ /* this is to relate the choice in the grid area specified in line 82*/
 grid-area: paper;
 }
 .choice-btn[data-choice='scissors']{
@@ -181,26 +183,22 @@ grid-area: paper;
 .results_heading{
     font-size: 1.5rem;
     letter-spacing: 0.1rem;
-    padding: 4rem 0 8rem;
-    
-    
+    padding: 4rem 0 8rem;   
 }
 .results_result{
     min-width: 10rem;
     min-height: 10rem;
-    /* background: #16213d; */
+    background: #16213d;
      border-radius: 50%;
     transform: scale(1.4);
     z-index: -1;
 } 
-
 .results_heading:first-of-type{
     grid-area: you-title;
-}
-.results_heading:last-of-type{
+} 
+/* .results_heading:last-of-type{
     grid-area: ia-title;
-    
-}
+}  */
 .results_result:first-of-type{
     grid-area: you-picked;
 }
@@ -218,7 +216,7 @@ grid-area: paper;
 }
 /* adding three layers of box shadow */
 .winner .choice::after{
-box-shadow: 0 0 30px #293251, 0 0 0 60px #232c4b, 0 0 0 100px #1e2949;
+box-shadow: 0 0 0 30px #404e7b, 0 0 0 80px #2a3765, 0 0 0 130px #1e2949;
 animation: winner 1s ease forwards;
 }
 @keyframes winner{
@@ -234,7 +232,7 @@ animation: winner 1s ease forwards;
     grid-area: result-winner;
     display: grid;
     place-items: center;
-    overflow: hidden;
+    
     
 }
 .results_text{
@@ -247,7 +245,7 @@ animation: winner 1s ease forwards;
     border: 2px solid transparent;
     border-radius: 0.6rem;
     color: var(--dark-text);
-    padding: 0.6rem 3.5rem;
+    padding: 0.6rem 3.5rem; 
     font-family: inherit;
     text-transform: inherit;
     font-size: 1.3rem;
@@ -280,11 +278,15 @@ animation: winner 1s ease forwards;
 .rules-btn:focus {
     border: 2px solid #fff;
 }
+.rules-btn:hover{
+    background: white;
+    color: var(--dark-text);
+}
 
 /* Rules modal */
 .modal{
     position: absolute;
-    height: 115%;
+    height: 115%; 
     width: 100%;
     top: 0;
     left: 0;
@@ -330,4 +332,127 @@ padding: 1rem 2rem;
 }
 .hidden{
     display: none;
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px){
+.container{
+    padding: auto;
+}
+.header{
+    height: 120px;
+    width: 350px;
+    border-radius: 0;
+    padding: 1rem 1rem 1rem;
+    margin: 0 auto;
+    border: 1px solid var(--outline);
+    
+}
+
+.score{
+    width: 100px;
+}
+
+.game{
+    height: 35rem;
+    padding-top: 6rem;
+
+}
+ .game::before{
+    left: 8%;
+    top: 35%;
+      
+}
+
+.choice{
+    width: 5rem;
+    height: 5rem;
+}
+.choices img{
+    transform: scale(1); /*to increase the size of the rock paper scissors images */
+}
+body{
+    min-height: 140vh;
+}
+.rules-btn{
+    bottom: -13rem;
+    margin: 0 auto;
+    left: 3rem;
+    cursor:default;
+    
+
+}
+.rules-btn:hover{
+    background: none;
+    color: var(--Light-text);
+    
+}
+.results_result{
+    min-width: 4rem;
+    min-height: 4rem;
+    
+} 
+.winner .choice::after{
+    box-shadow: 0 0 0 15px #404e7b, 0 0 0 30px #2a3765, 0 0 0 50px #1e2949;
+    
+    }
+    .results_text{
+        position: absolute;
+        bottom: -4rem;
+        width: 70%;
+        
+    }
+    .play-again{
+        position: absolute;
+        bottom: -7rem;
+        width: 70%;
+        
+
+    }
+    .results_text{
+        display: grid;
+        font-size: 3rem;
+        place-items: center;
+    }
+    .results_heading{
+        font-size: 1rem;
+        padding-left: 15px;
+    }
+    .results_heading:first-of-type{
+        position: absolute;
+        bottom: -2rem;
+        left: -01px;
+    } 
+    .results_heading:last-of-type{
+        position: absolute;
+        bottom: -2rem;
+        left: 195px;
+        
+    } 
+    
+    .modal_container{
+        
+        min-height: 140vh;       
+    }
+    .rules-img{
+        
+        height: 100%;
+        width: 100%;
+        padding-top: 15rem;      
+       
+    }
+    .close-btn{
+        position: absolute;
+        bottom: -20px;
+        left: 45%;
+        
+    }
+    .modal_heading{
+        position: absolute;
+        left: 45%;
+        padding-top: 5rem;
+    }
+    
+    
+
+
 }
